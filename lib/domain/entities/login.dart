@@ -252,14 +252,16 @@ class Data {
   int get accountStatus => _accountStatus ?? 0;
 
   // ---------------------------
-  // SETTERS (que estavam faltando)
+  // SETTERS COMPLETOS
   // ---------------------------
 
   set firstNameSetter(String value) => _firstName = value;
 
-  set gender(String? value) => _gender = value;
+  set genderSetter(String? value) => _gender = value;
 
   set profileImageSetter(dynamic value) => _profileImage = value;
+
+  set itemDocumentStatus(String value) => _verificationDocumentStatus = value;
 
   // ---------------------------
   // JSON
