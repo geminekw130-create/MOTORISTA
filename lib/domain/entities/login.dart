@@ -116,7 +116,6 @@ class Data {
     _verificationDocumentStatus = verificationDocumentStatus;
     _itemId = itemId;
     _itemTypeId = itemTypeId;
-    _remainingItems = remainingItems;
   }
 
   Data.fromJson(dynamic json) {
@@ -151,14 +150,13 @@ class Data {
     _profileImage = json['profile_image'];
     _smsNotification = json['sms_notification'];
     _emailNotification = json['email_notification'];
-    _remainingItems = json['remaining_items'];
+    remainingItems = json['remaining_items'];
     _pushNotification = json['push_notification'];
     _firebaseAuth = json['firebase_auth'];
     _verificationDocumentStatus = json['verification_document_status'];
     _itemId = json['item_id'];
     _itemTypeId = json['item_type_id'];
 
-    // ✔ NOVOS CAMPOS
     _documentVerify = int.tryParse(json['document_verify']?.toString() ?? '0') ?? 0;
     _verifiedStatus = int.tryParse(json['verified']?.toString() ?? '0') ?? 0;
     _accountStatus = int.tryParse(json['status']?.toString() ?? '0') ?? 0;
@@ -195,15 +193,17 @@ class Data {
   dynamic _profileImage;
   dynamic _smsNotification;
   dynamic _emailNotification;
+  int? _remainingItems;
+  int? remainingItems;
   dynamic _pushNotification;
   dynamic _firebaseAuth;
   String? _verificationDocumentStatus;
-  int? _remainingItems;
+  int? _itemId;
+  dynamic _itemTypeId;
+
   int? _documentVerify;
   int? _verifiedStatus;
   int? _accountStatus;
-  int? _itemId;
-  dynamic _itemTypeId;
 
   // ---------------------------
   // GETTERS
@@ -242,27 +242,24 @@ class Data {
   dynamic get emailNotification => _emailNotification;
   dynamic get pushNotification => _pushNotification;
   dynamic get firebaseAuth => _firebaseAuth;
-  int? get remainingItems => _remainingItems;
+  int? get remainingItem => _remainingItems;
   String? get verificationDocumentStatus => _verificationDocumentStatus;
   int? get itemId => _itemId;
   dynamic get itemTypeId => _itemTypeId;
 
-  // GETTERS NOVOS
   int get documentVerify => _documentVerify ?? 0;
   int get verifiedStatus => _verifiedStatus ?? 0;
   int get accountStatus => _accountStatus ?? 0;
 
   // ---------------------------
-  // SETTERS QUE FALTAVAM (RESOLVE SEUS ERROS)
+  // SETTERS (que estavam faltando)
   // ---------------------------
 
-  set gender(String? value) {
-    _gender = value;
-  }
+  set firstNameSetter(String value) => _firstName = value;
 
-  set profileImageSetter(dynamic value) {
-    _profileImage = value;
-  }
+  set gender(String? value) => _gender = value;
+
+  set profileImageSetter(dynamic value) => _profileImage = value;
 
   // ---------------------------
   // JSON
@@ -270,7 +267,6 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-
     map['id'] = _id;
     map["firestore_id"] = _fireStoreId;
     map['first_name'] = _firstName;
@@ -299,12 +295,12 @@ class Data {
     map['fcm'] = _fcm;
     map['device_id'] = _deviceId;
     map['identity_image'] = _identityImage;
-    map['remaining_items'] = _remainingItems;
+    map['remaining_items'] = remainingItems;
     map['profile_image'] = _profileImage;
-    map['sms_notification'] = _smsNotification;
-    map['email_notification'] = _emailNotification;
-    map['push_notification'] = _pushNotification;
-    map['firebase_auth'] = _firebaseAuth;
+    map['sms_notification'] = smsNotification;
+    map['email_notification'] = emailNotification;
+    map['push_notification'] = pushNotification;
+    map['firebase_auth'] = firebaseAuth;
     map['verification_document_status'] = _verificationDocumentStatus;
     map['item_id'] = _itemId;
     map['item_type_id'] = _itemTypeId;
