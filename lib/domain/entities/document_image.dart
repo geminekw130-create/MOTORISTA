@@ -1,10 +1,3 @@
-String normalizeStatus(dynamic v) {
-  if (v == null) return 'pending';
-  final s = v.toString().toLowerCase().trim();
-  if (s == '1' || s == 'true' || s == 'approved') return 'approved';
-  if (s == '0' || s == 'false' || s == 'pending') return 'pending';
-  return s;
-}
 
 class DocumentImageModel {
   int? status;
@@ -37,8 +30,9 @@ class Data {
   DrivingLicenceFront? drivingLicenceFront;
   DrivingLicenceBack? drivingLicenceBack;
 
-  DriverIdFront? driverIdFront;
-  DriverIdBack? driverIdBack;
+  DriverIdFront?driverIdFront;
+  DriverIdBack?driverIdBack;
+
 
   DriverAuthorization? driverAuthorization;
   HireServiceLicence? hireServiceLicence;
@@ -49,6 +43,7 @@ class Data {
       this.drivingLicenceBack,
       this.driverIdFront,
       this.driverIdBack,
+
       this.driverAuthorization,
       this.hireServiceLicence,
       this.inspectionCertificate});
@@ -67,6 +62,7 @@ class Data {
         ? DriverIdBack.fromJson(json['driver_id_back'])
         : null;
 
+
     driverAuthorization = json['driver_authorization'] != null
         ? DriverAuthorization.fromJson(json['driver_authorization'])
         : null;
@@ -82,15 +78,13 @@ class Data {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (drivingLicenceFront != null) {
       data['driving_licence_front'] = drivingLicenceFront!.toJson();
-    }
-    if (drivingLicenceBack != null) {
+    }if (drivingLicenceBack != null) {
       data['driving_licence_back'] = drivingLicenceBack!.toJson();
     }
 
     if (driverIdFront != null) {
       data['driver_id_front'] = driverIdFront!.toJson();
-    }
-    if (driverIdBack != null) {
+    }if (driverIdBack != null) {
       data['driver_id_back'] = driverIdBack!.toJson();
     }
     if (driverAuthorization != null) {
@@ -110,11 +104,11 @@ class DrivingLicenceFront {
   String? drivingLicenceImage;
   String? drivingLicenceStatus;
 
-  DrivingLicenceFront({this.drivingLicenceImage, this.drivingLicenceStatus});
+  DrivingLicenceFront({this.drivingLicenceImage,this.drivingLicenceStatus});
 
   DrivingLicenceFront.fromJson(Map<String, dynamic> json) {
     drivingLicenceImage = json['driving_licence_front_image'];
-    drivingLicenceStatus = normalizeStatus(json['driving_licence_front_status']);
+    drivingLicenceStatus = json['driving_licence_front_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -124,61 +118,66 @@ class DrivingLicenceFront {
     return data;
   }
 }
-
 class DrivingLicenceBack {
+
   String? drivingLicenceImageBack;
   String? drivingLicenceBackStatus;
 
-  DrivingLicenceBack({this.drivingLicenceImageBack, this.drivingLicenceBackStatus});
+  DrivingLicenceBack({this.drivingLicenceImageBack,this.drivingLicenceBackStatus});
 
   DrivingLicenceBack.fromJson(Map<String, dynamic> json) {
     drivingLicenceImageBack = json['driving_licence_back_image'];
-    drivingLicenceBackStatus = normalizeStatus(json['driving_licence_back_status']);
+    drivingLicenceBackStatus = json['driving_licence_back_status'];
+
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['driving_licence_back_image'] = drivingLicenceImageBack;
     data['driving_licence_back_status'] = drivingLicenceBackStatus;
+
     return data;
   }
 }
 
 class DriverIdFront {
   String? driverIdFrontImage;
+
   String? driverIdFrontImageStatus;
 
-  DriverIdFront({this.driverIdFrontImage, this.driverIdFrontImageStatus});
+  DriverIdFront(
+      {this.driverIdFrontImage, this.driverIdFrontImageStatus});
 
   DriverIdFront.fromJson(Map<String, dynamic> json) {
     driverIdFrontImage = json['driver_id_front_image'];
-    driverIdFrontImageStatus = normalizeStatus(json['driver_id_front_status']);
+     driverIdFrontImageStatus = json['driver_id_front_status'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['driver_id_front_image'] = driverIdFrontImage;
     data['driver_id_front_status'] = driverIdFrontImageStatus;
-    return data;
+     return data;
   }
 }
-
 class DriverIdBack {
   String? driverIdBackImage;
+
   String? driverIdBackImageStatus;
 
-  DriverIdBack({this.driverIdBackImage, this.driverIdBackImageStatus});
+  DriverIdBack(
+      {this.driverIdBackImage, this.driverIdBackImageStatus});
 
   DriverIdBack.fromJson(Map<String, dynamic> json) {
     driverIdBackImage = json['driver_id_back_image'];
-    driverIdBackImageStatus = normalizeStatus(json['driver_id_back_status']);
+    driverIdBackImageStatus = json['driver_id_back_status'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['driver_id_back_image'] = driverIdBackImage;
     data['driver_id_back_status'] = driverIdBackImageStatus;
-    return data;
+     return data;
   }
 }
 
@@ -188,14 +187,12 @@ class DriverAuthorization {
   String? driverAuthorizationStatus;
 
   DriverAuthorization(
-      {this.driverAuthorizationImage,
-      this.driverAuthorizationStatus,
-      this.driverAuthorizationImageBack});
+      {this.driverAuthorizationImage, this.driverAuthorizationStatus,driverAuthorizationImageBack});
 
   DriverAuthorization.fromJson(Map<String, dynamic> json) {
     driverAuthorizationImage = json['driver_authorization_image'];
     driverAuthorizationImageBack = json['driver_authorization_image'];
-    driverAuthorizationStatus = normalizeStatus(json['driver_authorization_status']);
+    driverAuthorizationStatus = json['driver_authorization_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -216,7 +213,7 @@ class HireServiceLicence {
 
   HireServiceLicence.fromJson(Map<String, dynamic> json) {
     hireServiceLicenceImage = json['hire_service_licence_image'];
-    hireServiceLicenceStatus = normalizeStatus(json['hire_service_licence_status']);
+    hireServiceLicenceStatus = json['hire_service_licence_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -236,7 +233,7 @@ class InspectionCertificate {
 
   InspectionCertificate.fromJson(Map<String, dynamic> json) {
     inspectionCertificateImage = json['inspection_certificate_image'];
-    inspectionCertificateStatus = normalizeStatus(json['inspection_certificate_status']);
+    inspectionCertificateStatus = json['inspection_certificate_status'];
   }
 
   Map<String, dynamic> toJson() {

@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:motoboy/core/utils/translate.dart';
-import 'package:motoboy/presentation/cubits/general_cubit.dart';
+import 'package:ride_on_driver/core/utils/translate.dart';
+import 'package:ride_on_driver/presentation/cubits/general_cubit.dart';
 import '../../../core/extensions/helper/push_notifications.dart';
 import '../../../core/extensions/workspace.dart';
 import '../../../core/services/data_store.dart';
@@ -117,25 +117,6 @@ class _ItemHomeScreenState extends State<ItemHomeScreen>
   }
 
   bool get appIsInForeground => _appLifecycleState == AppLifecycleState.resumed;
-
-  bool _isApprovedValue(dynamic value) {
-    if (value == null) return false;
-
-    if (value is bool) {
-      return value;
-    }
-
-    final String normalized = value.toString().toLowerCase().trim();
-
-    if (normalized == '1' ||
-        normalized == 'yes' ||
-        normalized == 'approved' ||
-        normalized == 'true') {
-      return true;
-    }
-
-    return false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -553,14 +534,14 @@ class _ItemHomeScreenState extends State<ItemHomeScreen>
                                 current: box.get("driver_status",
                                     defaultValue: false),
                                 onChanged: (value) async {
-                                  // Sempre valida o status de documentos mais recente
-                                  // vindo do backend (via GetDocApprovalStatusCubit),
-                                  // em vez de confiar apenas em dados de login em cache.
+                                  final data = loginModel?.data;
 
-                                  final isDocsApproved =
-                                      status.toLowerCase().trim() == "approved";
+                                  // Se não estiver aprovado, bloqueia imediatamente
+                                  if (data == null ||
+                                      data.documentVerify != 1 ||
+                                      data.verifiedStatus != 1 ||
+                                      data.accountStatus != 1) {
 
-                                  if (!isDocsApproved) {
                                     showModalBottomSheet(
                                       backgroundColor: notifires.getbgcolor,
                                       context: context,
@@ -579,23 +560,16 @@ class _ItemHomeScreenState extends State<ItemHomeScreen>
                                                   size: 50),
                                               const SizedBox(height: 16),
                                               Text(
-                                                "Account Verification In Progress"
-                                                    .translate(context),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium
-                                                    ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w600,
+                                                "Account Verification In Progress".translate(context),
+                                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                      fontWeight: FontWeight.w600,
                                                     ),
                                               ),
                                               const SizedBox(height: 10),
                                               Text(
                                                 "We’re currently reviewing your documents. You’ll get full access once verification is complete."
                                                     .translate(context),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium,
+                                                style: Theme.of(context).textTheme.bodyMedium,
                                                 textAlign: TextAlign.center,
                                               ),
                                               const SizedBox(height: 24),
@@ -607,45 +581,45 @@ class _ItemHomeScreenState extends State<ItemHomeScreen>
                                     return;
                                   }
 
-                                  // Documentos aprovados → pode ligar/desligar
+                                  // Aprovado → ativa/desativa na hora sem fechar o app
                                   box.put("driver_status", value);
 
-                                  if (value == false) {
+                                  if (!value) {
                                     context
                                         .read<UpdateDriverParameterCubit>()
                                         .updateDriverStatus(
                                           driverStatus: "inactive",
                                         );
-                                    context.read<UpdateDriverCubit>()
+                                    context
+                                        .read<UpdateDriverCubit>()
                                         .updateFirebaseDriverStatus(
-                                      driverId: context
-                                          .read<UpdateDriverParameterCubit>()
-                                          .state
-                                          .driverId,
-                                      driverStatus: "inactive",
-                                    );
+                                          driverId: context
+                                              .read<UpdateDriverParameterCubit>()
+                                              .state
+                                              .driverId,
+                                          driverStatus: "inactive",
+                                        );
                                   } else {
                                     context
                                         .read<UpdateDriverParameterCubit>()
                                         .updateDriverStatus(
                                           driverStatus: "active",
                                         );
-                                    context.read<UpdateDriverCubit>()
+                                    context
+                                        .read<UpdateDriverCubit>()
                                         .updateFirebaseDriverStatus(
-                                      driverId: context
-                                          .read<UpdateDriverParameterCubit>()
-                                          .state
-                                          .driverId,
-                                      driverStatus: "active",
-                                    );
+                                          driverId: context
+                                              .read<UpdateDriverParameterCubit>()
+                                              .state
+                                              .driverId,
+                                          driverStatus: "active",
+                                        );
                                   }
                                 },
                               );
                             }),
-                            const SizedBox(width: 45),
                           ],
                         ),
-                        const SizedBox(height: 10),
                       ],
                     ),
                   ),

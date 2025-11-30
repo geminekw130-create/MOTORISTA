@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     commonlyUserLogo(),
-                    Text("To Chegando Delivery Entregador",style: heading1(context).copyWith(color: Colors.black,fontSize: 25),)
+                    Text("RideOn Driver",style: heading1(context).copyWith(color: Colors.black,fontSize: 25),)
                   ],
                 ),
               ),

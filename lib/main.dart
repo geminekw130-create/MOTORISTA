@@ -29,10 +29,6 @@ void main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   await Hive.openBox('appBox');
-  // Força idioma padrão PT-BR na inicialização
-  final appBox = Hive.box('appBox');
-  appBox.put('lCode', 'pt');
-  appBox.put('locale', {'lang': 'pt', 'country': 'BR'});
   await initializeNotifications();
   await setupOneSignal();
   notifires = ColorNotifires();
@@ -65,7 +61,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  static const platform = MethodChannel('package:motoboy/floating_bubble');
+  static const platform = MethodChannel('com.tochegando.motoboy/floating_bubble');
   StreamSubscription<Position>? positionStreamSubscription;
   DateTime? lastUpdateTime;
   @override
@@ -331,7 +327,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
             return BlocBuilder<LanguageCubit, LanguageState>(
               builder: (context, state) {
                 if (state is LanguageLoader) {
-                  appLocale = Locale(state.language ?? "pt");
+                  appLocale = Locale(state.language ?? "en");
                 }
 
                 return MaterialApp(
@@ -340,9 +336,12 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   navigatorKey: navigatorKey,
                   theme: ThemeData(fontFamily: 'Gilroy Regular'),
                   debugShowCheckedModeBanner: false,
-                  locale: const Locale('pt', 'BR'),
+                  locale: appLocale,
                   supportedLocales: const [
-                    Locale('pt', 'BR'),
+                    Locale('en', 'US'),
+                    Locale('ar', 'AR'),
+
+
                   ],
                   localizationsDelegates: const [
                     AppLocalizations.delegate,
@@ -382,7 +381,7 @@ Future<void> showRideNotification({
   final androidDetails = AndroidNotificationDetails(
     'ride_channel',
     'Ride Request',
-    channelDescription: 'To Chegando Delivery Entregador ride notifications',
+    channelDescription: 'RideOn Driver ride notifications',
     importance: Importance.max,
     priority: Priority.high,
     icon: '@mipmap/ic_launcher',

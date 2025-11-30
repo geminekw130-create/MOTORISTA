@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 
 class AppLocalizations {
   final Locale locale;
-
   AppLocalizations(this.locale);
 
   static AppLocalizations? of(BuildContext context) {
@@ -14,12 +13,10 @@ class AppLocalizations {
   late Map<String, String> _localizedStrings;
 
   Future<void> load() async {
-    // Força sempre o carregamento do arquivo de português
-    const path = 'assets/language/pt.json';
-    final jsonString = await rootBundle.loadString(path);
-    final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    _localizedStrings =
-        jsonMap.map((key, value) => MapEntry(key, value.toString()));
+    String jsonString =
+    await rootBundle.loadString('assets/language/${locale.languageCode}.json');
+    Map<String, dynamic> jsonMap = json.decode(jsonString);
+    _localizedStrings = jsonMap.map((key, value) => MapEntry(key, value.toString()));
   }
 
   String translate(String key) {
@@ -27,7 +24,7 @@ class AppLocalizations {
   }
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  _AppLocalizationsDelegate();
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -35,13 +32,12 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 
   @override
   bool isSupported(Locale locale) {
-    // Somente português é suportado
-    return locale.languageCode == 'pt';
+    return ['en', 'ar','fr','th','ru'].contains(locale.languageCode);
   }
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
-    final localizations = AppLocalizations(locale);
+    AppLocalizations localizations = AppLocalizations(locale);
     await localizations.load();
     return localizations;
   }

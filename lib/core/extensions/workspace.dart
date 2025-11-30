@@ -22,7 +22,10 @@ import '../utils/common_widget.dart';
 String token = "";
 
 final List locale = [
-  {'name': 'Português (Brasil)', 'locale': 'pt'},
+
+  {'name': 'English', 'locale': "en"},
+  {'name': 'Arabic', 'locale': 'ar'},
+
 ];
 
 bool isOnDuty = false;
@@ -43,7 +46,7 @@ dynamic oneSignalToken = "";
 dynamic oneSignalOptedIn = "";
 String bearerToken = box.get("bearerToken")??"";
 
-Locale appLocale = const Locale('pt', 'BR');
+Locale appLocale = const Locale('en');
 var latitudeGlobal = "";
 var longitudeGlobal = "";
 
